@@ -1,6 +1,9 @@
 const exppress = require("express");
 const router = exppress.Router();
 
+const upload = require('../middlewares/upload');
+const checkAuth = require('../middlewares/checkAuth')
+
 const {
 
   getAllArticles,
@@ -13,12 +16,12 @@ const {
 
 router.get("/", getAllArticles);
 
-router.post("/", createArticle);
-
 router.get('/:articleId', getArticle)
 
-router.patch("/:articleId", updateArticle);
+router.post("/", checkAuth, upload.single('image'), createArticle);
 
-router.delete("/:articleId", deleteArticle);
+router.patch("/:articleId",  checkAuth, updateArticle);
+
+router.delete("/:articleId" , checkAuth, deleteArticle);
 
 module.exports = router;
